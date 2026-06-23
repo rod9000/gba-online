@@ -1,0 +1,483 @@
+/* ── Reset & Variables ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #08080f;
+  --bg2:         #0f0f1a;
+  --bg3:         #16162a;
+  --card:        #1a1a2e;
+  --card-hover:  #1f1f38;
+  --border:      #2a2a45;
+  --accent:      #7c3aed;
+  --accent2:     #a855f7;
+  --accent3:     #c084fc;
+  --text:        #e2e8f0;
+  --text2:       #94a3b8;
+  --text3:       #64748b;
+  --success:     #22c55e;
+  --danger:      #ef4444;
+  --radius:      12px;
+  --radius-sm:   8px;
+  --shadow:      0 4px 24px rgba(0,0,0,.4);
+  --transition:  .2s ease;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Typography ── */
+h1, h2, h3 { line-height: 1.2; font-weight: 700; }
+p { line-height: 1.6; }
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent2), var(--accent3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Layout ── */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 clamp(12px, 4vw, 32px); }
+.section { padding: clamp(40px, 8vw, 80px) 0; }
+.section-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; margin-bottom: clamp(24px, 4vw, 40px); flex-wrap: wrap;
+}
+.section-title { font-size: clamp(1.4rem, 4vw, 2rem); margin-bottom: 6px; }
+.section-sub { color: var(--text2); font-size: .95rem; }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px; border-radius: var(--radius-sm);
+  font-size: .9rem; font-weight: 600; cursor: pointer;
+  border: none; text-decoration: none; transition: var(--transition);
+  white-space: nowrap;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+}
+.btn-primary:hover { filter: brightness(1.15); transform: translateY(-1px); }
+.btn-ghost {
+  background: transparent; color: var(--text2);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { background: var(--bg3); color: var(--text); border-color: var(--accent); }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-danger:hover { filter: brightness(1.15); }
+.btn-sm { padding: 7px 14px; font-size: .82rem; }
+.btn-lg { padding: 14px 28px; font-size: 1rem; }
+
+/* ── Header ── */
+.header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(8,8,15,.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+.logo-icon { font-size: 1.4rem; color: var(--accent2); }
+.logo-text { font-size: 1.1rem; font-weight: 700; }
+.logo-text strong { color: var(--accent2); }
+.nav { display: flex; align-items: center; gap: 12px; }
+.nav-link {
+  color: var(--text2); text-decoration: none;
+  font-size: .9rem; font-weight: 500;
+  transition: color var(--transition);
+}
+.nav-link:hover { color: var(--accent2); }
+
+/* ── Hero ── */
+.hero {
+  min-height: clamp(500px, calc(100vh - 64px), 820px);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: clamp(40px, 8vw, 80px) clamp(12px, 4vw, 32px);
+  max-width: 800px; margin: 0 auto;
+}
+.hero-content { width: 100%; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 999px;
+  background: rgba(124,58,237,.15); border: 1px solid rgba(124,58,237,.3);
+  color: var(--accent3); font-size: .8rem; font-weight: 600;
+  margin-bottom: 24px;
+}
+.hero-title { font-size: clamp(2.4rem, 5vw, 4rem); margin-bottom: 20px; }
+.hero-sub { color: var(--text2); font-size: 1.1rem; max-width: 500px; margin-bottom: 36px; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
+.hero-controls {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.control-badge {
+  padding: 5px 10px; border-radius: 6px;
+  background: var(--bg3); border: 1px solid var(--border);
+  font-size: .75rem; color: var(--text2); font-family: monospace;
+}
+
+/* ── Emulator Section ── */
+.emulator-section {
+  background: var(--bg2); border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: clamp(16px, 4vw, 40px) 0;
+}
+.emulator-section[hidden] { display: none; }
+
+.emulator-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 12px;
+  margin-bottom: clamp(12px, 2vw, 24px); flex-wrap: wrap;
+}
+.playing-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: 999px;
+  background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.25);
+  color: var(--success); font-size: .75rem; font-weight: 600;
+}
+.emulator-game-name { font-size: clamp(1rem, 3vw, 1.5rem); margin-top: 6px; }
+.emulator-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+/* ═══════════════════════════════════════════════════════════
+   GBA DEVICE SHELL  —  SVG-based
+   ══════════════════════════════════════════════════════════ */
+
+.gba-wrapper {
+  position: relative;
+  max-width: min(1040px, calc((100vh - 160px) * 1.94));
+  aspect-ratio: 860 / 444;
+  margin: 0 auto;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* iframe behind SVG, aligned to screen cutout coordinates */
+.gba-screen-slot {
+  position: absolute;
+  left:   30.93%;   /* 266/860 */
+  top:    14.19%;   /* 63/444  */
+  width:  38.14%;   /* 328/860 */
+  aspect-ratio: 3 / 2;
+  background: #000;
+  overflow: hidden;
+  border-radius: 1%;
+  z-index: 0;
+}
+.gba-screen-slot iframe {
+  width: 100%; height: 100%;
+  border: none; display: block;
+}
+
+/* SVG overlay */
+.gba-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 1;
+}
+.gba-svg .gba-btn {
+  pointer-events: all;
+  cursor: pointer;
+  transition: filter .06s;
+}
+.gba-svg .gba-btn:active,
+.gba-svg .gba-btn.pressed {
+  filter: brightness(.72);
+}
+.gba-svg .gba-lbl {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 800;
+}
+
+/* Power LED: red when idle, green when game is active */
+#gba-power-led {
+  fill: #ef4444;
+  filter: drop-shadow(0 0 3px #ef4444);
+}
+.gba-wrapper.game-active #gba-power-led {
+  fill: #22c55e;
+  filter: drop-shadow(0 0 5px rgba(34,197,94,.8));
+  animation: led-pulse-svg 2.4s ease-in-out infinite;
+}
+@keyframes led-pulse-svg {
+  0%, 100% { opacity: 1;   filter: drop-shadow(0 0 6px rgba(34,197,94,.8)); }
+  50%       { opacity: .45; filter: drop-shadow(0 0 2px rgba(34,197,94,.3)); }
+}
+
+/* ─── Hint ─── */
+.emulator-hint {
+  text-align: center;
+  color: var(--text3);
+  font-size: .78rem;
+  margin-top: 14px;
+  letter-spacing: .3px;
+}
+
+/* ── Settings Modal ── */
+.settings-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+}
+.settings-overlay[hidden] { display: none; }
+
+.settings-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 24px 64px rgba(0,0,0,.6);
+  width: 100%; max-width: 380px;
+  padding: 24px;
+  display: flex; flex-direction: column; gap: 24px;
+}
+.settings-hd {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.settings-title {
+  font-size: 1.05rem; font-weight: 700; color: var(--text);
+}
+.settings-close {
+  background: transparent; border: none; cursor: pointer;
+  color: var(--text3); padding: 4px; border-radius: 6px;
+  display: flex; align-items: center;
+  transition: color var(--transition);
+}
+.settings-close:hover { color: var(--text); }
+
+.settings-section { display: flex; flex-direction: column; gap: 10px; }
+.settings-label {
+  font-size: .75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .8px; color: var(--text3);
+}
+.settings-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.ctrl-table { width: 100%; border-collapse: collapse; }
+.ctrl-table tr { border-bottom: 1px solid var(--border); }
+.ctrl-table tr:last-child { border-bottom: none; }
+.ctrl-key {
+  padding: 7px 8px 7px 0;
+  font-family: monospace; font-size: .82rem; font-weight: 700;
+  color: var(--accent3); white-space: nowrap;
+}
+.ctrl-desc {
+  padding: 7px 0; font-size: .85rem; color: var(--text2);
+}
+
+/* ── Games Grid ── */
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(130px, 18vw, 180px), 1fr));
+  gap: clamp(10px, 2vw, 16px);
+}
+
+.game-card {
+  border-radius: var(--radius); overflow: hidden;
+  background: var(--card); border: 1px solid var(--border);
+  cursor: pointer; transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+  display: flex; flex-direction: column;
+}
+.game-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 8px 32px rgba(124,58,237,.25);
+}
+.game-card-cover {
+  aspect-ratio: 3/4; display: flex;
+  align-items: center; justify-content: center;
+  font-size: 2.5rem; position: relative; overflow: hidden;
+}
+.game-card-cover::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,.6));
+}
+.play-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(124,58,237,.6);
+  opacity: 0; transition: opacity var(--transition);
+}
+.game-card:hover .play-overlay { opacity: 1; }
+.play-icon {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(255,255,255,.95);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent);
+}
+.game-card-info {
+  padding: 12px; border-top: 1px solid var(--border);
+}
+.game-card-name {
+  font-size: .85rem; font-weight: 600; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  text-transform: capitalize;
+}
+.game-card-badge {
+  display: inline-block; margin-top: 4px;
+  padding: 2px 6px; border-radius: 4px;
+  font-size: .65rem; font-weight: 700; letter-spacing: .5px;
+  text-transform: uppercase;
+}
+.badge-library { background: rgba(124,58,237,.2); color: var(--accent3); }
+.badge-upload  { background: rgba(34,197,94,.15); color: var(--success); }
+
+/* ── Empty / Loading states ── */
+.loading-state, .empty-state {
+  grid-column: 1 / -1; text-align: center;
+  padding: 60px 20px; color: var(--text2);
+}
+.spinner {
+  width: 40px; height: 40px; margin: 0 auto 16px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent2);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.empty-icon { font-size: 3rem; margin-bottom: 12px; color: var(--text3); }
+.empty-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
+.empty-instructions {
+  font-size: .85rem; line-height: 1.8;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 16px;
+  margin-top: 16px; max-width: 400px; margin-left: auto; margin-right: auto;
+  text-align: left;
+}
+.empty-instructions code {
+  background: var(--bg2); padding: 2px 6px; border-radius: 4px;
+  color: var(--accent3); font-size: .8rem;
+}
+
+/* ── Upload Zone ── */
+.upload-zone {
+  border: 2px dashed var(--border); border-radius: var(--radius);
+  padding: clamp(32px, 6vw, 64px) clamp(16px, 4vw, 24px); text-align: center;
+  transition: border-color var(--transition), background var(--transition);
+  cursor: pointer;
+}
+.upload-zone.drag-over {
+  border-color: var(--accent2);
+  background: rgba(124,58,237,.08);
+}
+.upload-icon {
+  color: var(--text3); margin-bottom: 16px;
+  transition: color var(--transition);
+}
+.upload-zone:hover .upload-icon, .upload-zone.drag-over .upload-icon { color: var(--accent2); }
+.upload-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
+.upload-sub { color: var(--text3); font-size: .9rem; margin: 8px 0; }
+.upload-limit { margin-top: 16px; color: var(--text3); font-size: .8rem; }
+.upload-progress { margin-top: 24px; }
+.progress-bar {
+  height: 6px; border-radius: 999px;
+  background: var(--bg3); overflow: hidden;
+}
+.progress-fill {
+  height: 100%; width: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width .3s ease;
+  border-radius: 999px;
+}
+.progress-label { margin-top: 8px; font-size: .85rem; color: var(--text2); text-align: center; }
+
+/* ── Footer ── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 24px; text-align: center;
+  color: var(--text3); font-size: .85rem;
+}
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+  padding: 12px 20px; border-radius: var(--radius-sm);
+  font-size: .9rem; font-weight: 600; color: #fff;
+  transform: translateY(80px); opacity: 0;
+  transition: transform .3s ease, opacity .3s ease;
+  pointer-events: none; max-width: 320px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.success { background: #166534; border: 1px solid #22c55e; }
+.toast.error   { background: #991b1b; border: 1px solid #ef4444; }
+.toast.info    { background: #1e1b4b; border: 1px solid var(--accent2); }
+
+/* ── Responsive ── */
+
+/* Tablet e abaixo */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column; gap: 32px;
+    text-align: center; min-height: auto;
+  }
+  .hero-sub { max-width: 100%; }
+  .hero-actions { justify-content: center; }
+  .hero-controls { justify-content: center; }
+  .emulator-wrapper {
+    /* Em tablet, usa largura total disponível */
+    max-width: min(100%, calc((100vh - 200px) * 1.5));
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .header-inner { height: 56px; }
+  .nav .nav-link { display: none; }
+  .btn-lg { padding: 12px 20px; font-size: .9rem; }
+
+  .hero-title { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+  .hero-badge { font-size: .7rem; }
+  .hero-controls { gap: 6px; }
+  .control-badge { font-size: .65rem; padding: 4px 8px; }
+
+  .emulator-section { padding: 12px 0 16px; }
+  .emulator-header { margin-bottom: 10px; }
+  .emulator-game-name { font-size: .95rem; margin-top: 2px; }
+  .playing-badge { font-size: .7rem; }
+  .emulator-actions .btn-sm { padding: 6px 10px; font-size: .75rem; }
+
+  .gba-wrapper { max-width: 100%; }
+
+  .game-card-info { padding: 8px 10px; }
+  .game-card-name { font-size: .78rem; }
+
+  .upload-icon svg { width: 36px; height: 36px; }
+  .upload-title { font-size: .95rem; }
+
+  .toast { bottom: 12px; right: 12px; left: 12px; max-width: 100%; font-size: .82rem; }
+}
+
+/* Telas muito pequenas (360px) */
+@media (max-width: 360px) {
+  .games-grid { grid-template-columns: repeat(2, 1fr); }
+  .emulator-actions { gap: 6px; }
+  .emulator-actions .btn-sm span { display: none; }
+  .gba-advance-label { display: none; }
+}
+
+/* Landscape em mobile — GBA usa toda a altura disponível */
+@media (max-height: 500px) and (orientation: landscape) {
+  .emulator-section { padding: 8px 0; }
+  .emulator-header { margin-bottom: 8px; }
+  .gba-wrapper { max-width: calc((100vh - 120px) * 1.94); }
+  .hero { min-height: auto; padding: 24px; }
+}
+
+/* Telas grandes (≥ 1400px) */
+@media (min-width: 1400px) {
+  .gba-wrapper { max-width: min(1060px, calc((100vh - 180px) * 1.94)); }
+  .games-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+}

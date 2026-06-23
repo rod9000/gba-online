@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GBA Player</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
+    #game { width: 100%; height: 100%; }
+
+    #error-screen {
+      display: none;
+      position: fixed; inset: 0;
+      background: #08080f; color: #e2e8f0;
+      align-items: center; justify-content: center;
+      flex-direction: column; gap: 14px;
+      text-align: center; padding: 24px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    #error-screen.show { display: flex; }
+    #error-screen h2 { color: #ef4444; font-size: 1.2rem; }
+    #error-screen p  { color: #94a3b8; font-size: .85rem; max-width: 360px; }
+    #error-screen code {
+      background: #1a1a2e; padding: 2px 6px; border-radius: 4px;
+      font-size: .8rem; color: #c084fc;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game"></div>
+
+  <div id="error-screen">
+    <h2>⚠ Erro ao carregar</h2>
+    <p id="error-msg">Não foi possível iniciar o emulador.</p>
+    <p>Verifique se o arquivo <code>.gba</code> é válido e tente novamente.</p>
+  </div>
+
+  <script>
+    (function () {
+      var params  = new URLSearchParams(window.location.search);
+      var romPath = params.get('rom');
+      var romName = params.get('name') || 'Jogo';
+
+      if (!romPath) {
+        document.getElementById('error-screen').classList.add('show');
+        document.getElementById('error-msg').textContent = 'Nenhuma ROM especificada.';
+        return;
+      }
+
+      // URL absoluta — obrigatório para o EmulatorJS buscar o arquivo
+      var romUrl = new URL(romPath, window.location.origin).href;
+
+      window.EJS_player           = '#game';
+      window.EJS_core             = 'gba';
+      window.EJS_gameUrl          = romUrl;
+      window.EJS_gameName         = romName;
+      window.EJS_color            = '#7c3aed';
+      window.EJS_pathtodata       = 'https://cdn.emulatorjs.org/stable/data/';
+      window.EJS_fullscreenOnLoaded = false;
+
+      // Recebe eventos da página principal (teclas e ações do emulador)
+      window.addEventListener('message', function (e) {
+        if (!e.data || !e.data._gba) return;
+
+        if (e.data.action === 'saveState') {
+          window.EJS_emulator && window.EJS_emulator.saveState();
+          return;
+        }
+        if (e.data.action === 'loadState') {
+          window.EJS_emulator && window.EJS_emulator.loadState();
+          return;
+        }
+
+        var type    = e.data.type;
+        var keyCode = e.data.keyCode;
+        var key     = e.data.key;
+        if (type !== 'keydown' && type !== 'keyup') return;
+
+        var opts = {
+          keyCode: keyCode, which: keyCode,
+          key: key,
+          code: key.length === 1 ? 'Key' + key.toUpperCase() : key,
+          bubbles: true, cancelable: true
+        };
+
+        // Dispara em todos os alvos possíveis que o EmulatorJS pode ouvir
+        [window, document, document.body].forEach(function (t) {
+          t && t.dispatchEvent(new KeyboardEvent(type, opts));
+        });
+        var canvas = document.querySelector('canvas');
+        if (canvas) canvas.dispatchEvent(new KeyboardEvent(type, opts));
+      });
+
+      var script  = document.createElement('script');
+      script.src  = 'https://cdn.emulatorjs.org/stable/data/loader.js';
+      script.onerror = function () {
+        document.getElementById('error-screen').classList.add('show');
+        document.getElementById('error-msg').textContent =
+          'Falha ao carregar o EmulatorJS. Verifique sua conexão com a internet.';
+      };
+      document.body.appendChild(script);
+    })();
+  </script>
+
+</body>
+</html>
